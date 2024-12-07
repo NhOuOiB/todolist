@@ -1,7 +1,7 @@
 import React from 'react';
 import { IoMdClose } from 'react-icons/io';
+import { FaCheck } from 'react-icons/fa6';
 import { IconContext } from 'react-icons';
-import { MDCCheckbox } from '@material/checkbox';
 
 const Todos = ({ todos, setTodos, todoRef }) => {
   // 刪除todo
@@ -34,11 +34,18 @@ const Todos = ({ todos, setTodos, todoRef }) => {
         >
           <div className="h-full flex items-center gap-4" key={todo.time}>
             <div className="w-1 h-full bg-[#7890cb] rounded-s"></div>
-            <input
-              type="checkbox"
-              checked={todo.done}
-              onChange={(e) => handleToggle(e, todo.time)}
-            />
+            {/* checkbox */}
+            <div
+              className={`min-w-5 min-h-5 border rounded flex justify-center items-center transition duration-300 ${
+                todo.done && 'bg-[#7890cb]'
+              }`}
+            >
+              <IconContext.Provider
+                value={{ className: `${todo.done ? 'text-white' : 'opacity-0'}` }}
+              >
+                <FaCheck />
+              </IconContext.Provider>
+            </div>
             <div className={`${todo.done && 'line-through'}`}>{todo.text}</div>
           </div>
           <div className="cursor-pointer p-1 mr-4" onClick={(e) => handleDelete(e, todo.time)}>
