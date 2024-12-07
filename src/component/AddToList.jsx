@@ -4,6 +4,8 @@ import { IconContext } from 'react-icons';
 
 const AddToList = ({ todos, setTodos, shouldScrollRef }) => {
   const [text, setText] = React.useState('');
+
+  // 新增todo
   const handleAdd = () => {
     if (text.trim() === '') return;
     const newTodos = [...todos, { text, done: false, time: new Date().toISOString() }];
@@ -11,6 +13,8 @@ const AddToList = ({ todos, setTodos, shouldScrollRef }) => {
     setText('');
     shouldScrollRef.current = true;
   };
+
+  // todo文字
   const handleInput = (e) => {
     setText(e.target.value);
   };

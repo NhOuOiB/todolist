@@ -1,7 +1,9 @@
 import React from 'react';
 
 const ProcessBar = ({ todos }) => {
+  // 完成數量
   const doneCount = todos.filter((todo) => todo.done).length;
+  // 百分比計算
   const percentage = todos.length === 0 ? 0 : Math.floor((doneCount / todos.length) * 100);
   return (
     <div className="my-4 flex items-center">
