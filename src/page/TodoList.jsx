@@ -70,7 +70,6 @@ const TodoList = () => {
   const shouldScrollRef = useRef(false);
 
   useEffect(() => {
-    // handleSearch();
     handleSearchInput(search);
   }, [todos]);
 
@@ -99,6 +98,7 @@ const TodoList = () => {
           <hr className="border border-gray-400 mt-2" />
         </div>
         <ProcessBar todos={searchTodos} />
+        {/* 搜尋欄 開始 */}
         <div className="h-12 my-4 px-2">
           <input
             type="text"
@@ -107,6 +107,7 @@ const TodoList = () => {
             onInput={(e) => handleSearchInput(e.target.value)}
           />
         </div>
+        {/* 搜尋欄 結束 */}
         <Todos
           todos={searchTodos}
           handleDelete={handleDelete}
