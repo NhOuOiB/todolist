@@ -3,24 +3,7 @@ import { IoMdClose } from 'react-icons/io';
 import { FaCheck } from 'react-icons/fa6';
 import { IconContext } from 'react-icons';
 
-const Todos = ({ todos, setTodos, todoRef }) => {
-  // 刪除todo
-  const handleDelete = (e, time) => {
-    e.stopPropagation();
-
-    const newTodos = todos.filter((todo) => todo.time !== time);
-    setTodos(newTodos);
-  };
-  // todo完成狀態切換
-  const handleToggle = (e, time) => {
-    const newTodos = todos.map((todo) => {
-      if (todo.time === time) {
-        return { ...todo, done: !todo.done };
-      }
-      return todo;
-    });
-    setTodos(newTodos);
-  };
+const Todos = ({ todos, handleDelete, handleToggle, todoRef }) => {
   return (
     <div
       className="min-h-[15.5rem] max-h-[15.5rem] flex flex-col gap-2 overflow-y-scroll"
