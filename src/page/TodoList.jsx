@@ -5,10 +5,43 @@ import AddToList from '../component/AddToList';
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
+  const [text, setText] = React.useState('');
+
+  // 新增todo
+  const handleAdd = () => {
+    if (text.trim() === '') return;
+    const newTodos = [...todos, { text, done: false, time: new Date().toISOString() }];
+    setTodos(newTodos);
+    setText('');
+    shouldScrollRef.current = true;
+  };
+
+  // todo文字
+  const handleInput = (e) => {
+    setText(e.target.value);
+  };
+
+  // 刪除todo
+  const handleDelete = (e, time) => {
+    e.stopPropagation();
+
+    const newTodos = todos.filter((todo) => todo.time !== time);
+    setTodos(newTodos);
+  };
+  // todo完成狀態切換
+  const handleToggle = (e, time) => {
+    const newTodos = todos.map((todo) => {
+      if (todo.time === time) {
+        return { ...todo, done: !todo.done };
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+  };
 
   // todos排序
   const [MoveDoneToEnd, setMoveDoneToEnd] = useState(false);
-  
+
   const sortTodos = () => {
     // 完成移至最後
     if (MoveDoneToEnd) {
@@ -48,7 +81,12 @@ const TodoList = () => {
           <hr className="border border-gray-400 mt-2" />
         </div>
         <ProcessBar todos={todos} />
-        <Todos todos={todos} setTodos={setTodos} todoRef={todoRef} />
+        <Todos
+          todos={todos}
+          handleDelete={handleDelete}
+          handleToggle={handleToggle}
+          todoRef={todoRef}
+        />
         {/* 完成移至最後 開始 */}
         <hr className="border border-gray-400 my-4" />
         <div className="flex justify-end items-center gap-1">
@@ -67,7 +105,7 @@ const TodoList = () => {
           </div>
         </div>
         {/* 完成移至最後 結束 */}
-        <AddToList todos={todos} setTodos={setTodos} shouldScrollRef={shouldScrollRef} />
+        <AddToList text={text} handleInput={handleInput} handleAdd={handleAdd} />
       </div>
     </div>
   );
