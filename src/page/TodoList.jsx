@@ -6,6 +6,8 @@ import AddToList from '../component/AddToList';
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
   const [text, setText] = React.useState('');
+  const [search, setSearch] = React.useState('');
+  const [searchTodos, setSearchTodos] = React.useState([]);
 
   // 新增todo
   const handleAdd = () => {
@@ -28,6 +30,7 @@ const TodoList = () => {
     const newTodos = todos.filter((todo) => todo.time !== time);
     setTodos(newTodos);
   };
+
   // todo完成狀態切換
   const handleToggle = (e, time) => {
     const newTodos = todos.map((todo) => {
@@ -67,11 +70,26 @@ const TodoList = () => {
   const shouldScrollRef = useRef(false);
 
   useEffect(() => {
+    // handleSearch();
+    handleSearchInput(search);
+  }, [todos]);
+
+  useEffect(() => {
     if (shouldScrollRef.current && todoRef.current) {
       todoRef.current.scrollTop = todoRef.current.scrollHeight; // 滾動到底部
       shouldScrollRef.current = false;
     }
-  }, [todos]);
+  }, [searchTodos]);
+
+  const handleSearchInput = (searchText) => {
+    setSearch(searchText);
+    setSearchTodos(
+      todos.filter((todo) => {
+        return todo.text.includes(searchText);
+      })
+    );
+  };
+
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <div className="w-full sm:w-3/4 md:w-3/5 xl:w-2/5 2xl:w-1/4 p-5">
@@ -80,9 +98,17 @@ const TodoList = () => {
           <div className="text-gray-400 text-sm">Add things to do</div>
           <hr className="border border-gray-400 mt-2" />
         </div>
-        <ProcessBar todos={todos} />
+        <ProcessBar todos={searchTodos} />
+        <div className="h-12 my-4 px-2">
+          <input
+            type="text"
+            className="w-full h-full rounded border px-2"
+            value={search}
+            onInput={(e) => handleSearchInput(e.target.value)}
+          />
+        </div>
         <Todos
-          todos={todos}
+          todos={searchTodos}
           handleDelete={handleDelete}
           handleToggle={handleToggle}
           todoRef={todoRef}
