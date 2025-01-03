@@ -2,22 +2,7 @@ import React from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
 
-const AddToList = ({ todos, setTodos, shouldScrollRef }) => {
-  const [text, setText] = React.useState('');
-
-  // 新增todo
-  const handleAdd = () => {
-    if (text.trim() === '') return;
-    const newTodos = [...todos, { text, done: false, time: new Date().toISOString() }];
-    setTodos(newTodos);
-    setText('');
-    shouldScrollRef.current = true;
-  };
-
-  // todo文字
-  const handleInput = (e) => {
-    setText(e.target.value);
-  };
+const AddToList = ({ text, handleInput, handleAdd }) => {
   return (
     <div className="mt-16 sm:mt-20">
       <div className="mb-1">Add to list</div>
