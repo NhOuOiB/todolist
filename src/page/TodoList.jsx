@@ -70,24 +70,22 @@ const TodoList = () => {
   const shouldScrollRef = useRef(false);
 
   useEffect(() => {
-    handleSearchInput(search);
-  }, [todos]);
-
-  useEffect(() => {
     if (shouldScrollRef.current && todoRef.current) {
       todoRef.current.scrollTop = todoRef.current.scrollHeight; // 滾動到底部
       shouldScrollRef.current = false;
     }
   }, [searchTodos]);
 
+  // 搜尋功能
   const handleSearchInput = (searchText) => {
     setSearch(searchText);
-    setSearchTodos(
-      todos.filter((todo) => {
-        return todo.text.includes(searchText);
-      })
-    );
+    const newTodos = todos.filter((todo) => todo.text.includes(searchText));
+    setSearchTodos(newTodos);
   };
+
+  useEffect(() => {
+    handleSearchInput(search);
+  }, [todos]);
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
@@ -99,14 +97,17 @@ const TodoList = () => {
         </div>
         <ProcessBar todos={searchTodos} />
         {/* 搜尋欄 開始 */}
-        <div className="h-12 my-4 px-2">
-          <input
-            type="text"
-            className="w-full h-full rounded border px-2"
-            value={search}
-            onInput={(e) => handleSearchInput(e.target.value)}
-          />
-        </div>
+        {todos.length > 0 && (
+          <div className="h-12 my-4 px-2">
+            <input
+              type="text"
+              className="w-full h-full rounded border px-2"
+              value={search}
+              onInput={(e) => handleSearchInput(e.target.value)}
+              placeholder="Search todo"
+            />
+          </div>
+        )}
         {/* 搜尋欄 結束 */}
         <Todos
           todos={searchTodos}
